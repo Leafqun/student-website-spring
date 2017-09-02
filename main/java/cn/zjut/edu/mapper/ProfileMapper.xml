@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjut.edu.mapper.ProfileMapper">
+  <resultMap id="BaseResultMap" type="cn.zjut.edu.dto.Profile">
+    <id column="profileId" jdbcType="INTEGER" property="profileId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.zjut.edu.dto.Profile">
+    <result column="goals" jdbcType="LONGVARCHAR" property="goals" />
+    <result column="program" jdbcType="LONGVARCHAR" property="program" />
+    <result column="courses" jdbcType="LONGVARCHAR" property="courses" />
+    <result column="principle" jdbcType="LONGVARCHAR" property="principle" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    profileId
+  </sql>
+  <sql id="Blob_Column_List">
+    goals, program, courses, principle
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from profile
+    where profileId = #{profileId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from profile
+    where profileId = #{profileId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.zjut.edu.dto.Profile">
+    insert into profile (profileId, goals, program, 
+      courses, principle)
+    values (#{profileId,jdbcType=INTEGER}, #{goals,jdbcType=LONGVARCHAR}, #{program,jdbcType=LONGVARCHAR}, 
+      #{courses,jdbcType=LONGVARCHAR}, #{principle,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.zjut.edu.dto.Profile">
+    insert into profile
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="profileId != null">
+        profileId,
+      </if>
+      <if test="goals != null">
+        goals,
+      </if>
+      <if test="program != null">
+        program,
+      </if>
+      <if test="courses != null">
+        courses,
+      </if>
+      <if test="principle != null">
+        principle,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="profileId != null">
+        #{profileId,jdbcType=INTEGER},
+      </if>
+      <if test="goals != null">
+        #{goals,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="program != null">
+        #{program,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="courses != null">
+        #{courses,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="principle != null">
+        #{principle,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.zjut.edu.dto.Profile">
+    update profile
+    <set>
+      <if test="goals != null">
+        goals = #{goals,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="program != null">
+        program = #{program,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="courses != null">
+        courses = #{courses,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="principle != null">
+        principle = #{principle,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where profileId = #{profileId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.zjut.edu.dto.Profile">
+    update profile
+    set goals = #{goals,jdbcType=LONGVARCHAR},
+      program = #{program,jdbcType=LONGVARCHAR},
+      courses = #{courses,jdbcType=LONGVARCHAR},
+      principle = #{principle,jdbcType=LONGVARCHAR}
+    where profileId = #{profileId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjut.edu.mapper.NoticeMapper">
+  <resultMap id="BaseResultMap" type="cn.zjut.edu.dto.Notice">
+    <id column="noticeId" jdbcType="INTEGER" property="noticeId" />
+    <result column="noticeName" jdbcType="VARCHAR" property="noticeName" />
+    <result column="file" jdbcType="VARCHAR" property="file" />
+    <result column="noticeTime" jdbcType="TIMESTAMP" property="noticeTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.zjut.edu.dto.Notice">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    noticeId, noticeName, file, noticeTime
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from notice
+    where noticeId = #{noticeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from notice
+    where noticeId = #{noticeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.zjut.edu.dto.Notice">
+    insert into notice (noticeId, noticeName, file, 
+      noticeTime, content)
+    values (#{noticeId,jdbcType=INTEGER}, #{noticeName,jdbcType=VARCHAR}, #{file,jdbcType=VARCHAR}, 
+      #{noticeTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.zjut.edu.dto.Notice">
+    insert into notice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="noticeId != null">
+        noticeId,
+      </if>
+      <if test="noticeName != null">
+        noticeName,
+      </if>
+      <if test="file != null">
+        file,
+      </if>
+      <if test="noticeTime != null">
+        noticeTime,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="noticeId != null">
+        #{noticeId,jdbcType=INTEGER},
+      </if>
+      <if test="noticeName != null">
+        #{noticeName,jdbcType=VARCHAR},
+      </if>
+      <if test="file != null">
+        #{file,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeTime != null">
+        #{noticeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.zjut.edu.dto.Notice">
+    update notice
+    <set>
+      <if test="noticeName != null">
+        noticeName = #{noticeName,jdbcType=VARCHAR},
+      </if>
+      <if test="file != null">
+        file = #{file,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeTime != null">
+        noticeTime = #{noticeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where noticeId = #{noticeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.zjut.edu.dto.Notice">
+    update notice
+    set noticeName = #{noticeName,jdbcType=VARCHAR},
+      file = #{file,jdbcType=VARCHAR},
+      noticeTime = #{noticeTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where noticeId = #{noticeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.zjut.edu.dto.Notice">
+    update notice
+    set noticeName = #{noticeName,jdbcType=VARCHAR},
+      file = #{file,jdbcType=VARCHAR},
+      noticeTime = #{noticeTime,jdbcType=TIMESTAMP}
+    where noticeId = #{noticeId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjut.edu.mapper.CourseFileCustomMapper">
+    <resultMap id="BaseResultMap" type="cn.zjut.edu.dto.CourseFile">
+        <id column="cfileId" jdbcType="INTEGER" property="cfileId" />
+        <result column="courseId" jdbcType="INTEGER" property="courseId" />
+        <result column="cfileName" jdbcType="VARCHAR" property="cfileName" />
+        <result column="ctype" jdbcType="INTEGER" property="ctype" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        cfileId, courseId, cfileName, ctype
+    </sql>
+    <select id="selectAllCourseFile" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      SELECT
+      <include refid="Base_Column_List"></include>
+        FROM  coursefile
+        WHERE courseId = #{courseId,jdbcType=INTEGER}
+    </select>
+    <select id="selectCourseFileByType" parameterType="cn.zjut.edu.dto.FileKey" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM  coursefile
+        WHERE courseId = #{fileKey.courseId,jdbcType=INTEGER} AND ctype = #{fileKey.ctype,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByCourseId" parameterType="java.lang.Integer">
+        delete from coursefile
+        where courseId = #{courseId,jdbcType=INTEGER}
+    </delete>
+</mapper>

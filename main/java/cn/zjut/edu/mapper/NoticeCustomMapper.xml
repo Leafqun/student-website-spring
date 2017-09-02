@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjut.edu.mapper.NoticeCustomMapper">
+    <resultMap id="BaseResultMap" type="cn.zjut.edu.dto.Notice">
+        <id column="noticeId" jdbcType="INTEGER" property="noticeId" />
+        <result column="noticeName" jdbcType="VARCHAR" property="noticeName" />
+        <result column="file" jdbcType="VARCHAR" property="file" />
+        <result column="noticeTime" jdbcType="TIMESTAMP" property="noticeTime" />
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.zjut.edu.dto.Notice">
+        <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        noticeId, noticeName, file, noticeTime
+    </sql>
+    <sql id="Blob_Column_List">
+    content
+  </sql>
+    <select id="getAllNotice" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from notice
+        order by noticeTime DESC
+    </select>
+    <select id="countNotice" resultType="java.lang.Integer">
+        SELECT count(noticeId) from notice
+    </select>
+</mapper>

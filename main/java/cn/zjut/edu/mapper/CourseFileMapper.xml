@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjut.edu.mapper.CourseFileMapper">
+  <resultMap id="BaseResultMap" type="cn.zjut.edu.dto.CourseFile">
+    <id column="cfileId" jdbcType="INTEGER" property="cfileId" />
+    <result column="courseId" jdbcType="INTEGER" property="courseId" />
+    <result column="cfileName" jdbcType="VARCHAR" property="cfileName" />
+    <result column="ctype" jdbcType="INTEGER" property="ctype" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cfileId, courseId, cfileName, ctype
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from coursefile
+    where cfileId = #{cfileId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from coursefile
+    where cfileId = #{cfileId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.zjut.edu.dto.CourseFile">
+    insert into coursefile (cfileId, courseId, cfileName, 
+      ctype)
+    values (#{cfileId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{cfileName,jdbcType=VARCHAR}, 
+      #{ctype,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.zjut.edu.dto.CourseFile">
+    insert into coursefile
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cfileId != null">
+        cfileId,
+      </if>
+      <if test="courseId != null">
+        courseId,
+      </if>
+      <if test="cfileName != null">
+        cfileName,
+      </if>
+      <if test="ctype != null">
+        ctype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cfileId != null">
+        #{cfileId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="cfileName != null">
+        #{cfileName,jdbcType=VARCHAR},
+      </if>
+      <if test="ctype != null">
+        #{ctype,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.zjut.edu.dto.CourseFile">
+    update coursefile
+    <set>
+      <if test="courseId != null">
+        courseId = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="cfileName != null">
+        cfileName = #{cfileName,jdbcType=VARCHAR},
+      </if>
+      <if test="ctype != null">
+        ctype = #{ctype,jdbcType=INTEGER},
+      </if>
+    </set>
+    where cfileId = #{cfileId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.zjut.edu.dto.CourseFile">
+    update coursefile
+    set courseId = #{courseId,jdbcType=INTEGER},
+      cfileName = #{cfileName,jdbcType=VARCHAR},
+      ctype = #{ctype,jdbcType=INTEGER}
+    where cfileId = #{cfileId,jdbcType=INTEGER}
+  </update>
+</mapper>

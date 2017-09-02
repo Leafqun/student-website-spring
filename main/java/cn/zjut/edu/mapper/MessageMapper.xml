@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjut.edu.mapper.MessageMapper">
+  <resultMap id="BaseResultMap" type="cn.zjut.edu.dto.Message">
+    <id column="messageId" jdbcType="INTEGER" property="messageId" />
+    <result column="stuName" jdbcType="VARCHAR" property="stuName" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="mTime" jdbcType="TIMESTAMP" property="mTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.zjut.edu.dto.Message">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    messageId, stuName, email, mTime
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from message
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from message
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.zjut.edu.dto.Message">
+    insert into message (messageId, stuName, email, 
+      mTime, content)
+    values (#{messageId,jdbcType=INTEGER}, #{stuName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{mTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.zjut.edu.dto.Message">
+    insert into message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="messageId != null">
+        messageId,
+      </if>
+      <if test="stuName != null">
+        stuName,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="mTime != null">
+        mTime,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="messageId != null">
+        #{messageId,jdbcType=INTEGER},
+      </if>
+      <if test="stuName != null">
+        #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="mTime != null">
+        #{mTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.zjut.edu.dto.Message">
+    update message
+    <set>
+      <if test="stuName != null">
+        stuName = #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="mTime != null">
+        mTime = #{mTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.zjut.edu.dto.Message">
+    update message
+    set stuName = #{stuName,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      mTime = #{mTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.zjut.edu.dto.Message">
+    update message
+    set stuName = #{stuName,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      mTime = #{mTime,jdbcType=TIMESTAMP}
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </update>
+</mapper>

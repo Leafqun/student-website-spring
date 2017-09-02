@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>添加内容</title>
+    <style type="text/css" >
+        #content{
+            color: #262626;
+            max-width: 70%;
+            position: relative;
+            margin:200px 20px 200px 400px;
+        }
+        .detail{
+            margin:0 0 20px 0;
+            width:100%;
+        }
+        .location{
+            margin-left: 300px;
+            width:100%;
+        }
+    </style>
+    <script src="js/jquery-1.9.0.min.js"></script>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="content">
+    <label>添加内容：</label>
+    <form action="javascript:void(0)" method="post" enctype="multipart/form-data" name="form" id="tf">
+        <input type="hidden" name="noticeId" :value="notice.noticeId"/>
+        <input type="hidden" name="userId" :value="notice.userId"/>
+        <input type="hidden" name="file" :value="notice.file"/>
+        <input type="text" name="noticeName" :value="notice.noticeName"/>
+        <div class="detail">
+            <textarea rows="10" cols="100" name="content">{{notice.content}}</textarea>
+        </div>
+        <div class="detail">
+            <div><span>附件：<a :href="'../pic/'+notice.file" :download="notice.file">{{notice.file}}</a></span><input type="file" name="cfile"/></div>
+        </div>
+        <div class="location">
+            <button id="bt">提交</button>
+        </div>
+    </form>
+</div>
+
+</body>
+<script type="application/javascript">
+    var vm=new Vue({
+        el:'#content',
+        data:{
+            notice:""
+        }
+    });
+    $.ajax({
+        type: "get",
+        url: "../notice/getNoticeContent.do",
+        data: "noticeId="+getParam(),
+        success: function (result) {
+            vm.notice = $.parseJSON(result).notice;
+        }
+    });
+    function getParam(){
+        var str=window.location.search;
+        arr=str.split("?");
+        param=arr[1].split("=");
+        return param[1];
+    };
+    //ajax上传文件以及批量上传表单
+    $("#bt").click(function(){
+        //var formData=new FormData($('#tf')[0]);
+        /*$.ajax({
+            type: "POST",
+            url: "../notice/submitNotice.do",
+            data: formData,
+            processData: false,
+            contentType: false,
+            async: false,
+            cache: false,
+            success: function (result) {
+                var jsd=$.parseJSON(result);
+                if(jsd.msg=="更改成功"){
+                    $(location).attr("href","index.jsp");
+                }
+            }
+        });*/
+        var tform=document.getElementById("tf");
+        var formData=new FormData(tform);
+        var request=new XMLHttpRequest();
+        request.open("POST","http://119.23.22.99:8080/Student_Website/notice/submitNotice.do");
+        if(request.readyState==4&&callback){
+            callback(request);
+        }
+        request.send(formData);
+        request.onreadystatechange=function(){
+            if(request.readyState ===4 && request.status===200){
+                var temp = request.resopnseText;
+                console.log(temp);
+            }
+        }
+    });
+    var filePath = $("input[name=file]").val();
+    if("" != filePath){
+        //获取附件大小（单位：KB）
+        var fileSize = document.getElementById("file").files[0].size / 1024;
+        if(fileSize > 55078532){
+            alert("图片大小不能超过55MB");
+        }
+    }
+</script>
+
+</html>

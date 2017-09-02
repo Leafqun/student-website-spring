@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjut.edu.mapper.TablesCustomMapper">
+  <resultMap id="BaseResultMap" type="cn.zjut.edu.dto.Tables">
+    <id column="tableId" jdbcType="INTEGER" property="tableId" />
+    <result column="tableName" jdbcType="VARCHAR" property="tableName" />
+    <result column="tableFile" jdbcType="VARCHAR" property="tableFile" />
+    <result column="tableType" jdbcType="INTEGER" property="tableType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tableId, tableName, tableFile, tableType
+  </sql>
+  <select id="selectTablesByType" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tables
+    where tableType = #{tableType,jdbcType=INTEGER}
+    order by tableId desc
+  </select>
+  <select id="selectAllTables"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tables
+    ORDER by tableId desc
+  </select>
+  <select id="selectTablesNum"  resultType="java.lang.Integer">
+    select
+    count(tableId)
+    from tables
+  </select>
+</mapper>

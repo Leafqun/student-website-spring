@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">WebSiteName</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="../Student_Website/course.html">Home</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Page 1-1</a></li>
+                        <li><a href="#">Page 1-2</a></li>
+                        <li><a href="#">Page 1-3</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Page 2</a></li>
+                <li><a href="#">Page 3</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div id="app">
+        <form role="form" id="form1" action="javascript:void(0)" method="post">
+            <input type="hidden" name="noticeId" v-model="notice.noticeId"/>
+            <input type="hidden" name="userId" v-model="notice.userId"/>
+            <input type="hidden" name="file" v-model="notice.file"/>
+            <div class="form-group">
+                <label for="noticeName">通知名称:</label>
+                <input type="text" class="form-control" name="noticeName" id="noticeName" v-model="notice.noticeName"/>
+            </div>
+            <div class="form-group">
+                <label for="editor1">通知内容:</label>
+                <script id="editor1" name="content" type="text/plain" ></script>
+            </div>
+            <input type="file" name="cfile" />
+            <button type="submit" class="btn btn-default" @click="submit">Submit</button>
+        </form>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="UEditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="UEditor/ueditor.all.js"></script>
+<!-- 实例化编辑器 -->
+<script src="js/vue.js"></script>
+<script src="js/vue-resource.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="application/javascript">
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            notice:{
+                noticeId:null,
+                userId:null,
+                noticeName:"",
+                content:"",
+                file:"",
+                noticeTime:null
+            }
+        },
+        created(){
+            this.fetchData();
+            this.UEditor(this.course);
+        },
+        watch:{
+            notice:function (val) {
+                this.UEditor(val);
+            }
+        },
+        methods:{
+            fetchData () {
+                this.$http.post("http://119.23.22.99:8080/Student_Website/notice/getNoticeContent.do",{noticeId:this.getNoticeId()},{emulateJSON: true}).then(function (response) {
+                    var data = response.body;
+                    this.notice = data.notice;
+                }, function (error) {
+                    console.log(error);
+                });
+            },
+            getNoticeId() {
+                var url = window.location.href;
+                return url.substring(url.indexOf("=")+1)
+            },
+            UEditor(val){
+                var editor1 = UE.getEditor('editor1');
+                editor1.ready(function() {
+                    //设置编辑器的内容
+                    //获取html内容，返回: <p>hello</p>
+                    editor1.setHeight(300);
+                    if(val&&val.content){
+                        editor1.setContent(val.content);
+                    }
+                });
+            },
+            submit(){
+                var formData = new FormData(document.getElementById("form1"));
+                this.$http.post("http://119.23.22.99:8080/Student_Website/notice/submitNotice.do", formData, {emulateJSON: true}).then(function (response) {
+                    var data = response.body;
+                    if(data.msg == "添加成功"){
+                        window.location.href = "index.jsp";
+                    }else{
+                        window.location.href = "index.jsp";
+                    }
+                }, function (error) {
+                    console.log(error);
+                });
+            }
+        }
+    });
+</script>
+
+</html>

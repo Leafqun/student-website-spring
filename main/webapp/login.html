@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录注册</title>
+		<link rel="stylesheet" href="css/login.css" />
+		<script type="text/javascript" src="js/jquery-1.9.0.min.js" ></script>
+		<script type="text/javascript" src="js/login.js?v=<%=Math.random()%>" ></script>
+	</head>
+	<body>
+		<div class="left">
+			
+		</div>
+		<div class="right">
+			<div class="login" id="login" >
+				<div class=login_page>
+					<form method="get" action="javascript:void(0)" id="loginForm">
+						<h1 class="hh1">登录</h1>
+						<div class="lineH">
+							<input type="text" class="in" name="username" id="logname"
+								placeholder="手机号、账号或邮箱"></input>
+						</div>
+						<div class="lineH">
+							<input type="password" class="in" name="password" id="password"
+								placeholder="密码"></input>
+							<div class="forget">
+								<a href="">忘记密码？</a>
+							</div>
+						</div>
+						<span>
+							<button class="button1" id="loginButton">登录</button>
+						</span>
+					</form>
+					<div class="no_account">
+						<p class="plz_reg">
+							没有账户？ <a href="javascript:void(0)" id="reg">注册</a>
+						</p>
+					</div>
+				</div>
+				<div class="error">
+						<p class="eee" id="userCheck"></p>
+						<p class="ee" id="pwdCheck"></p>	
+				</div>
+			</div>
+			<div class="register" id="register" style="display: none">
+				<div class="register_page">
+					<h1 class="hh1">注册</h1>
+					<form method="POST" action="javascript:void(0)" name="regForm">
+						<div class="lineH">
+							<input type="text" class="in" name="username" id="regName"
+								placeholder="手机号、账号或邮箱"></input>
+						</div>
+						<div class="lineH">
+							<input type="password" class="in" name="password" id="pwd1"
+								placeholder="密码"></input>
+						</div>
+						<div class="lineH">
+							<input type="password" class="in" name="pwd2" id="pwd2"
+								placeholder="确认密码"></input>
+						</div>
+						<span>
+							<button class="button1" id="regButton">注册</button>
+						</span>
+					</form>
+					<div id="has_account">
+						<p class="plz_log">
+							已有账户？ <a href="javascript:void(0)" id="log">登录</a>
+						</p>
+					</div>
+				</div>
+				<div class="error">
+						<p class="eee" id="regUserCheck"></p>
+						<p class="ee" id="regpwdCheck"></p>
+						<p class="ee" id="regpwd2Check"></p>
+				</div>
+			</div>
+		</div>
+		<div class="foot">
+			
+		</div>
+	</body>
+</html>

@@ -1,0 +1,84 @@
+body{
+	background: white no-repeat left top;
+	background-size:100% 100%;  
+}
+.left{
+	float:left;
+	width:800px;
+	height:800px;
+}
+.right{
+	float:right;
+	margin-top: 200px;
+	
+}
+.login,.register{
+	width:500px;
+	position:relative;
+}
+.login_page,.register_page{
+	width:50%;
+	position:relative;
+	background-color: #fff;
+	border: 1px solid #e6e6e6;
+	border-radius: 1px;
+	float:left;
+}
+.lineH{
+	width:100%;
+	margin-bottom: 10px;
+}
+.in{
+	background: 0 0;
+	border: 1px solid #dbdbdb;
+	border-radius: 3px;
+	box-sizing: border-box;
+	color: #262626;
+	font-size: 14px;
+	padding: 9px 8px 7px;
+	-webkit-appearance: none;
+	width:100%;
+	height: 30px;
+}
+.forget{
+	text-align: right;
+}
+.button1{
+	background: #3897f0;
+	border-color: #3897f0;
+	color: #fff;
+	border-radius: 3px;
+	border-style: solid;
+	border-width: 1px;
+	font-weight: 600;
+	outline: none;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
+	height: 30px;
+	-webkit-appearance: none;
+
+}
+.hh1{
+	text-align: center;
+}
+.forget {
+	text-align: right;
+	vertical-align: baseline;
+	height: 30px;
+}
+.plz_reg,.plz_log{
+	text-align: center;
+}
+.error{
+	position:relative;
+	overflow: hidden;
+}
+.eee{
+	margin-top:90px;
+	color:red;
+}
+.ee{
+	margin-top:20px;
+}

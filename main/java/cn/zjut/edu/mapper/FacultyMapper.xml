@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjut.edu.mapper.FacultyMapper">
+  <resultMap id="BaseResultMap" type="cn.zjut.edu.dto.Faculty">
+    <id column="facultyId" jdbcType="INTEGER" property="facultyId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.zjut.edu.dto.Faculty">
+    <result column="teachers" jdbcType="LONGVARCHAR" property="teachers" />
+    <result column="projects" jdbcType="LONGVARCHAR" property="projects" />
+    <result column="papers" jdbcType="LONGVARCHAR" property="papers" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    facultyId
+  </sql>
+  <sql id="Blob_Column_List">
+    teachers, projects, papers
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from faculty
+    where facultyId = #{facultyId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from faculty
+    where facultyId = #{facultyId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.zjut.edu.dto.Faculty">
+    insert into faculty (facultyId, teachers, projects, 
+      papers)
+    values (#{facultyId,jdbcType=INTEGER}, #{teachers,jdbcType=LONGVARCHAR}, #{projects,jdbcType=LONGVARCHAR}, 
+      #{papers,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.zjut.edu.dto.Faculty">
+    insert into faculty
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="facultyId != null">
+        facultyId,
+      </if>
+      <if test="teachers != null">
+        teachers,
+      </if>
+      <if test="projects != null">
+        projects,
+      </if>
+      <if test="papers != null">
+        papers,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="facultyId != null">
+        #{facultyId,jdbcType=INTEGER},
+      </if>
+      <if test="teachers != null">
+        #{teachers,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="projects != null">
+        #{projects,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="papers != null">
+        #{papers,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.zjut.edu.dto.Faculty">
+    update faculty
+    <set>
+      <if test="teachers != null">
+        teachers = #{teachers,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="projects != null">
+        projects = #{projects,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="papers != null">
+        papers = #{papers,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where facultyId = #{facultyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.zjut.edu.dto.Faculty">
+    update faculty
+    set teachers = #{teachers,jdbcType=LONGVARCHAR},
+      projects = #{projects,jdbcType=LONGVARCHAR},
+      papers = #{papers,jdbcType=LONGVARCHAR}
+    where facultyId = #{facultyId,jdbcType=INTEGER}
+  </update>
+</mapper>

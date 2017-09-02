@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjut.edu.mapper.ManagementMapper">
+  <resultMap id="BaseResultMap" type="cn.zjut.edu.dto.Management">
+    <id column="mId" jdbcType="INTEGER" property="mId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.zjut.edu.dto.Management">
+    <result column="handbooks" jdbcType="LONGVARCHAR" property="handbooks" />
+    <result column="processes" jdbcType="LONGVARCHAR" property="processes" />
+    <result column="requirements" jdbcType="LONGVARCHAR" property="requirements" />
+    <result column="gpc" jdbcType="LONGVARCHAR" property="gpc" />
+    <result column="tips" jdbcType="LONGVARCHAR" property="tips" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    mId
+  </sql>
+  <sql id="Blob_Column_List">
+    handbooks, processes, requirements, gpc, tips
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from management
+    where mId = #{mId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from management
+    where mId = #{mId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.zjut.edu.dto.Management">
+    insert into management (mId, handbooks, processes, 
+      requirements, gpc, tips
+      )
+    values (#{mId,jdbcType=INTEGER}, #{handbooks,jdbcType=LONGVARCHAR}, #{processes,jdbcType=LONGVARCHAR}, 
+      #{requirements,jdbcType=LONGVARCHAR}, #{gpc,jdbcType=LONGVARCHAR}, #{tips,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.zjut.edu.dto.Management">
+    insert into management
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        mId,
+      </if>
+      <if test="handbooks != null">
+        handbooks,
+      </if>
+      <if test="processes != null">
+        processes,
+      </if>
+      <if test="requirements != null">
+        requirements,
+      </if>
+      <if test="gpc != null">
+        gpc,
+      </if>
+      <if test="tips != null">
+        tips,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        #{mId,jdbcType=INTEGER},
+      </if>
+      <if test="handbooks != null">
+        #{handbooks,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="processes != null">
+        #{processes,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="requirements != null">
+        #{requirements,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="gpc != null">
+        #{gpc,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="tips != null">
+        #{tips,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.zjut.edu.dto.Management">
+    update management
+    <set>
+      <if test="handbooks != null">
+        handbooks = #{handbooks,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="processes != null">
+        processes = #{processes,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="requirements != null">
+        requirements = #{requirements,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="gpc != null">
+        gpc = #{gpc,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="tips != null">
+        tips = #{tips,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where mId = #{mId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.zjut.edu.dto.Management">
+    update management
+    set handbooks = #{handbooks,jdbcType=LONGVARCHAR},
+      processes = #{processes,jdbcType=LONGVARCHAR},
+      requirements = #{requirements,jdbcType=LONGVARCHAR},
+      gpc = #{gpc,jdbcType=LONGVARCHAR},
+      tips = #{tips,jdbcType=LONGVARCHAR}
+    where mId = #{mId,jdbcType=INTEGER}
+  </update>
+</mapper>

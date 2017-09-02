@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">WebSiteName</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="../Student_Website/course.html">Home</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Page 1-1</a></li>
+                        <li><a href="#">Page 1-2</a></li>
+                        <li><a href="#">Page 1-3</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Page 2</a></li>
+                <li><a href="#">Page 3</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div id="app">
+        <form role="form" id="form1" action="javascript:void(0)" method="post">
+            <input type="hidden" name="courseId" v-model="course.courseId"/>
+            <div class="form-group">
+                <label for="courseName">课程名称:</label>
+                <input type="text" class="form-control" name="courseName" id="courseName" v-model="course.courseName"/>
+                <div><button class="btn btn-info" data-toggle="modal" data-target="#myModal">课程资料上传</button></div>
+                <div><button class="btn btn-info" data-toggle="modal" data-target="#myModal2">课程视频上传</button></div>
+            </div>
+            <div class="form-group">
+                <label for="editor1">课程大纲:</label>
+                <script id="editor1" name="courseSchedule" type="text/plain" ></script>
+            </div>
+            <div class="form-group">
+                <label for="editor2">课程安排:</label>
+                <script id="editor2" name="courseArr" type="text/plain" ></script>
+            </div>
+            <div class="form-group">
+            <button type="submit" class="btn btn-default" @click="submit">Submit</button>
+            </div>
+        </form>
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">课程资料上传</h4>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" class="close" @click="getFiles">&times;</button>
+                        <div v-for="courseFile in courseFileList" v-if="courseFile.ctype == 1">
+                            {{courseFile.cfileName}}
+                        </div>
+                        <form action="javascript:void(0)" method="post" enctype="multipart/form-data" id="form2">
+                            <button type="submit" class="btn btn-danger" @click="fileup">上传</button>
+                            <input type="hidden" name="courseId" v-model="course.courseId"/>
+                            <input type="hidden" name="ctype" value="1"/>
+                            <input v-for="courseFile in courseFileList" name="names" type="hidden" v-model="courseFile.cfileName"/>
+                        <el-upload
+                                class="upload-demo"
+                                drag
+                                action="javascript:void(0)"
+                                :auto-upload="false"
+                                multiple>
+                            <i class="el-icon-upload"></i>
+                            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                        </el-upload>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="myModal2" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">课程视频上传</h4>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" class="close" @click="getFiles">&times;</button>
+                        <div v-for="courseFile in courseFileList" v-if="course.ctype == 2">
+                            {{courseFile.cfileName}}
+                        </div>
+                        <form action="javascript:void(0)" method="post" enctype="multipart/form-data" id="form3">
+                            <button type="submit" class="btn btn-danger" @click="fileup2">上传</button>
+                            <input type="hidden" name="courseId" v-model="course.courseId"/>
+                            <input type="hidden" name="ctype" value="2"/>
+                            <input v-for="courseFile in courseFileList" name="names" type="hidden" v-model="courseFile.cfileName"/>
+                            <el-upload
+                                    class="upload-demo"
+                                    drag
+                                    action="javascript:void(0)"
+                                    :auto-upload="false"
+                                    multiple>
+                                <i class="el-icon-upload"></i>
+                                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                            </el-upload>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="UEditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="UEditor/ueditor.all.js"></script>
+<!-- 实例化编辑器 -->
+<script src="js/vue.js"></script>
+<script src="js/vue-resource.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="application/javascript">
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            course:{
+                courseId:null,
+                courseName:"",
+                courseArr:"",
+                courseSchedule:""
+            },
+            courseFileList:null,
+            fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+        },
+        created(){
+            this.fetchData();
+            this.UEditor(this.course);
+        },
+        watch:{
+            course:function (val) {
+                this.UEditor(val);
+            }
+        },
+        methods:{
+            fetchData () {
+                this.$http.post("http://119.23.22.99:8080/Student_Website/course/getCourse.do",{courseId:this.getCourseId()},{emulateJSON: true}).then(function (response) {
+                    var data = response.body;
+                    this.course = data.course;
+                }, function (error) {
+                    console.log(error);
+                });
+                this.$http.post("http://119.23.22.99:8080/Student_Website/course/getCourseFile.do",{courseId:this.getCourseId()},{emulateJSON: true}).then(function (response) {
+                    var data = response.body;
+                    this.courseFileList = data.courseFileList;
+                }, function (error) {
+                    console.log(error);
+                });
+            },
+            getCourseId() {
+                var url = window.location.href;
+                return url.substring(url.indexOf("=")+1)
+            },
+            UEditor(val){
+                var editor1 = UE.getEditor('editor1');
+                editor1.ready(function() {
+                    //设置编辑器的内容
+                    //获取html内容，返回: <p>hello</p>
+                    editor1.setHeight(300);
+                    if(val&&val.courseSchedule){
+                        editor1.setContent(val.courseSchedule);
+                    }
+                });
+                var editor2 = UE.getEditor('editor2');
+                editor2.ready(function() {
+                    //设置编辑器的内容
+                    //获取html内容，返回: <p>hello</p>
+                    editor2.setHeight(300);
+                    if(val&&val.courseArr){
+                        editor2.setContent(val.courseArr);
+                    }
+                });
+            },
+            submit(){
+                var formData = new FormData(document.getElementById("form1"));
+                this.$http.post("http://119.23.22.99:8080/Student_Website/course/submitCourse.do", formData, {emulateJSON: true}).then(function (response) {
+                    var data = response.body;
+                    if(data.msg == "添加成功"){
+                        alert("添加成功");
+                    }else{
+                        alert(" 更改成功");
+                    }
+                }, function (error) {
+                    console.log(error);
+                });
+            },
+            getFiles(){
+                console.log("getFiles")
+                this.$http.post("http://119.23.22.99:8080/Student_Website/course/getCourseFile.do",{courseId:this.getCourseId()},{emulateJSON: true}).then(function (response) {
+                    var data = response.body;
+                    this.courseFileList = data.courseFileList;
+                    console.log("getFiles")
+                }, function (error) {
+                    console.log(error);
+                });
+            },
+            fileup(){
+                var formData1 = new FormData(document.getElementById("form2"));
+                this.$http.post("http://119.23.22.99:8080/Student_Website/course/insertCourseFile.do",formData1,{emulateJSON: true}).then(function (response) {
+                    var data = response.body;
+                    console.log(data.msg);
+                }, function (error) {
+                    console.log(error);
+                });
+            },
+            fileup2(){
+                var formData2 = new FormData(document.getElementById("form3"));
+                this.$http.post("http://119.23.22.99:8080/Student_Website/course/insertCourseFile.do",formData2,{emulateJSON: true}).then(function (response) {
+                    var data = response.body;
+                    console.log(data.msg);
+                }, function (error) {
+                    console.log(error);
+                });
+            }
+        }
+    });
+</script>
+
+</html>
